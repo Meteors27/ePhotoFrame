@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Croppie</title>
+  <meta name="description" content="website description...">
+<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<h1>
+   Croppie<span># Image crop</span></h1>
+<div id="img-crop">
+  <div id="upload">
+    <h3>01. Upload</h3>
+    <div class="block">
+      <div class="stage">
+        <label id="filedrag">
+          <input type="file" id="fileselect" name="fileselect" accept="image/*"/>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div id="crop">
+    <h3>02. Crop / Preview</h3>
+    <div class="block">
+      <div class="stage">
+        <button class="btn" id="prev" onclick="cropCancel();">PREV</button>
+        <button class="btn" id="next" onclick="cropResult();">NEXT</button>
+        <div id="croppie"></div>
+      </div>
+    </div>
+  </div>
+  <div id="result">
+    <h3>03. Result</h3>
+    <button id="close" onclick="cropCancel();"></button>
+    <div class="block">
+      <div class="stage"><img src=""/></div>
+    </div>
+  </div>
+</div>
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.2/croppie.min.js'></script><script  src="./script.js"></script>
+
+</body>
+</html>
