@@ -1,5 +1,5 @@
 import machine
-from ePaper import EPaper
+from lib.ePaper import EPaper
 
 
 class ColorBlock(object):
