@@ -2,3 +2,4 @@
 *.code-workspace
 .picowgo
 .vscode/
+venv/
