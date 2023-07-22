@@ -21,6 +21,6 @@ while True:
     data = conn.recv(1024)
     if not data:
         break
-    # conn.sendall(data)
-    print(data)
+    # process data
+
 conn.close()
