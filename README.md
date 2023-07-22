@@ -16,7 +16,7 @@ ESP32提供WiFi，用户接入后通过浏览器访问ESP32的网页服务器(`1
 
 ## 目前的进度
 - ESP32能提供WiFi并和手机通信，也能连接本地局域网
-- ESP32通过microdot库能提供基础的网页服务
+- ESP32通过[`microdot`](https://github.com/miguelgrinberg/microdot)库能提供基础的网页服务
 
 ## 接下来需要做的
 ### web前端
