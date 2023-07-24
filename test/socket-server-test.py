@@ -11,7 +11,7 @@ if str(os.uname()).find("rp2") > -1:
     print("WiFi AP started")
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-addr = socket.getaddrinfo("0.0.0.0", 9000)[0][-1]
+addr = socket.getaddrinfo("127.0.0.1", 9000)[0][-1]  # TODO: change to  0.0.0.0
 s.bind(addr)
 s.listen(1)
 print("Listening on", addr)
@@ -22,5 +22,6 @@ while True:
     if not data:
         break
     # process data
+    print(data)
 
 conn.close()

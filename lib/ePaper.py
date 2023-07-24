@@ -160,18 +160,18 @@ class EPaper(object):
         self.dc.low()
         print("Enter sleep")
 
-    def draw(self, image, hStart=0, wStart=0, width=800, height=480):
-        self.sendCommand(0x10)
-        for h in range(height):
-            for w in range(int(width / 2)):
-                if (
-                    hStart <= h < hStart + height
-                    and wStart / 2 <= w < (wStart + width) / 2
-                ):
-                    self.__sendDataArray(image[h])
-                else:
-                    self.sendData(0x11)
-        self.display()
+    # def draw(self, image, hStart=0, wStart=0, width=800, height=480):
+    #     self.sendCommand(0x10)
+    #     for h in range(height):
+    #         for w in range(int(width / 2)):
+    #             if (
+    #                 hStart <= h < hStart + height
+    #                 and wStart / 2 <= w < (wStart + width) / 2
+    #             ):
+    #                 self.__sendDataArray(image[h])
+    #             else:
+    #                 self.sendData(0x11)
+    #     self.display()
 
 
 if __name__ == "__main__":
