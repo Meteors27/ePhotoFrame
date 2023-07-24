@@ -28,13 +28,17 @@ class EPaper(object):
     def sendCommand(self, cmd):
         self.dc.low()
         self.cs.low()
-        self.spi.write(bytearray([cmd]))
+        if isinstance(cmd, int):
+            cmd = bytearray([cmd])
+        self.spi.write(bytearray(cmd))
         self.cs.high()
 
     def sendData(self, data):
         self.dc.high()
         self.cs.low()
-        self.spi.write(bytearray([data]))
+        if isinstance(data, int):
+            data = bytearray([data])
+        self.spi.write(bytearray(data))
         self.cs.high()
 
     def wait(self):
