@@ -1,3 +1,4 @@
+from math import e
 from lib.microdot_asyncio import Microdot, send_file
 from lib.microdot_asyncio_websocket import with_websocket
 import machine, os, time
@@ -49,6 +50,7 @@ async def echo(request, ws):
     await ws.send("done")
     await ws.close()
     ePaper.display()
+    ePaper.sleep()
 
 
 app.run(port=8080)
