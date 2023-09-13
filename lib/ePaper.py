@@ -1,9 +1,20 @@
-from math import e
 from machine import SPI, Pin
 import time, machine
 
 
 class EPaper(object):
+    # size param
+    height = 480
+    width = 800
+    # color param
+    white = 0b001
+    black = 0b000
+    red = 0b100
+    yellow = 0b101
+    green = 0b010
+    blue = 0b011
+    orange = 0b110
+
     def __init__(
         self, busy=12, rst=13, dc=14, cs=15, sck=10, mosi=11, baudrate=8_000_000
     ):
@@ -19,8 +30,8 @@ class EPaper(object):
             sck=Pin(sck),
             mosi=Pin(mosi),
         )
-        self.height = 480
-        self.width = 800
+        self.height = EPaper.height
+        self.width = EPaper.width
         print(
             f"EPaper Info: \n\tbusy: {self.busy}, \n\trst: {self.rst}, \n\tdc: {self.dc}, \n\tcs: {self.cs}, \n\tspi: {self.spi}"
         )
@@ -154,6 +165,30 @@ class EPaper(object):
 
         self.display()
         print("Clear successfully.")
+
+    def drawStart(self):
+        self.sendCommand(0x10)
+        # self.dc.high()
+        # self.cs.low()
+
+    def draw(self, data):
+        self.sendData(data)
+
+    def drawEnd(self):
+        # self.cs.high()
+        self.display()
+
+    def drawPixelStart(self):
+        self.drawStart()
+        self.pixelCnt = 0
+
+    def drawPixel(self, pixel):
+        self.pixelCnt += 1
+        if self.pixelCnt % 2 == 1:
+            self.pixel = pixel << 4
+        else:
+            self.pixel += pixel
+            self.draw(self.pixel)
 
     def sleep(self):
         self.sendCommand(0x07)

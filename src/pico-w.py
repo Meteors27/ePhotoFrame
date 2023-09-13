@@ -1,8 +1,8 @@
-from math import e
+import machine, os, time
 from lib.microdot_asyncio import Microdot, send_file
 from lib.microdot_asyncio_websocket import with_websocket
-import machine, os, time
 from lib.ePaper import EPaper
+from lib.INA219 import *  # XXX
 
 
 def wifiInit(essid="ePaper", password="88888888"):
