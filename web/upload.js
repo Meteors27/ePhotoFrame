@@ -1,8 +1,35 @@
 function upload() {
+    const width = 800;
+    const height = 480;
     const canvas = document.getElementById('resultCanvas');
     const ctx = canvas.getContext('2d');
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const data = imageData.data;
+    var data = imageData.data;
+    if (canvas.width < canvas.height) {
+        const width = imageData.width;
+        const height = imageData.height;
+
+        // 创建一个新的数组来存储转置后的像素数据
+        const transposedData = new Uint8ClampedArray(data.length);
+
+        // 执行图像数据的转置
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                const sourceIndex = (y * width + x) * 4;
+                const targetIndex = (x * height + y) * 4;
+
+                // 将像素数据复制到新数组中
+                transposedData[targetIndex] = data[sourceIndex];
+                transposedData[targetIndex + 1] = data[sourceIndex + 1];
+                transposedData[targetIndex + 2] = data[sourceIndex + 2];
+                transposedData[targetIndex + 3] = data[sourceIndex + 3];
+            }
+        }
+
+        // 创建一个新的 ImageData 对象，将转置后的像素数据放入其中
+        const transposedImageData = new ImageData(transposedData, height, width);
+        data = transposedImageData.data;
+    }
     const buffer = dataToBuffer(data);
 
     const loader = document.getElementById('loader');
@@ -26,12 +53,12 @@ function upload() {
     socket.onmessage = function (event) {
         console.log('WebSocket message: ', event.data);
         // if event.data is a number, then it is the number of the slice
-        if (Number(event.data) != NaN && Number(event.data) < canvas.height && Number(event.data) >= 0) {
-            const slicedBuffer = buffer.slice(number * canvas.width / 2, (number + 1) * canvas.width / 2);
+        if (Number(event.data) != NaN && Number(event.data) < height && Number(event.data) >= 0) {
+            const slicedBuffer = buffer.slice(number * width / 2, (number + 1) * width / 2);
             socket.send(slicedBuffer);
             number++;
 
-            percentage.innerHTML = (number / canvas.height * 100).toFixed(0) + '%';
+            percentage.innerHTML = (number / height * 100).toFixed(0) + '%';
         }
     };
     let number = 0;

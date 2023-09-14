@@ -275,8 +275,8 @@ button:focus {
 }
 
 #img-crop #result .stage {
-  width: 800px;
-  height: 480px;
+  /* width: 800px;
+  height: 480px; */
 }
 
 #img-crop #result #close {
