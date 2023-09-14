@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Croppie</title>
+  <meta name="description" content="website description...">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./normalize.min.css">
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <!-- partial:index.partial.html -->
+  <h1>
+    Croppie<span># Image crop</span></h1>
+  <div id="img-crop">
+    <div id="upload">
+      <h3>Select</h3>
+      <div class="block">
+        <div class="stage">
+          <label id="filedrag">
+            <input type="file" id="fileselect" name="fileselect" accept="image/*" />
+          </label>
+        </div>
+      </div>
+    </div>
+    <div id="crop">
+      <h3>Preview</h3>
+      <div class="block">
+
+        <div class="stage">
+          <div id="croppie"></div>
+          <div class="switch"></div>
+        </div>
+      </div>
+      <div style="margin-top: 5em;"></div>
+      <button class="btn" onclick="cropCancel();">Prev</button>
+      <button class="btn" onclick="cropResult();">Next</button>
+      <button class="btn" id="cr-rotate" onClick="cropRotate(-90);">Rotate</button>
+      <button class="btn" id="cr-aspect-toggle" onClick="toggleAspectRatio();">Orientation</button>
+    </div>
+    <div id="result">
+      <h3>Result</h3>
+      <button id="close" onclick="cropCancel();"></button>
+      <div class="block">
+        <div class="stage">
+          <canvas id="resultCanvas"></canvas>
+        </div>
+      </div>
+      <div class="loader" id="loader" style="opacity: 0%; margin-top: 1em;">
+      </div>
+      <h3 id="percentage" style="opacity: 0%;">percentage</h3>
+      <button class=" btn" id="uploadButton" onclick="upload();">Upload</button>
+
+    </div>
+  </div>
+  <!-- partial -->
+  <script src='./jquery.min.js'></script>
+  <script src='./croppie.min.js'></script>
+  <script src="./script.js"></script>
+  <script src="./dither.js"></script>
+  <script src="./upload.js"></script>
+
+</body>
+
+</html>

@@ -1,4 +1,4 @@
-from lib.ePaper import EPaper
+from ePaper import EPaper
 
 
 def displayBattery(batteryLevel, epd: EPaper):

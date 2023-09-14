@@ -1,27 +1,28 @@
 const $upload = $('#upload'),
-      $crop = $('#crop'),
-      $result = $('#result'),
-      $croppie = $('#croppie');
+  $crop = $('#crop'),
+  $result = $('#result'),
+  $croppie = $('#croppie');
 
 var cr,
-    cr_img = '',
-    img_w = 320,
-    img_h = 320,
-    isCrop = 0;
+  transposed = false,
+  cr_img = '',
+  img_w = 800,
+  img_h = 480,
+  isCrop = 0;
 
 //支援上傳檔案判斷
-$(function(){
+$(function () {
   if (window.File && window.FileList && window.FileReader)
     fileInit();
   else
-    alert('您的裝置不支援圖片上傳');
+    alert('您的设备不支持图片上传');
 });
 
 //********* file select/drop *********
 var fileselect = document.getElementById("fileselect"),
-    filedrag = document.getElementById("filedrag");
+  filedrag = document.getElementById("filedrag");
 
-function fileInit(){
+function fileInit() {
   // file select
   fileselect.addEventListener("change", FileSelectHandler, false);
   // is XHR2 available?
@@ -40,11 +41,11 @@ function FileSelectHandler(e) {
   FileDragHover(e);
   // fetch FileList object
   var files = e.target.files || e.dataTransfer.files;
-  if(files[0] && files[0].type.match('image.*')){
+  if (files[0] && files[0].type.match('image.*')) {
     var reader = new FileReader();
     reader.onload = function (e) {
       $upload.hide();
-      if(cr_img == '') { //第一次上傳
+      if (cr_img == '') { //第一次上傳
         cr_img = e.target.result;
         cropInit();
       }
@@ -67,7 +68,7 @@ function FileDragHover(e) {
 
 //********* crop *********
 //裁切設定
-function cropInit(){
+function cropInit() {
   cr = $croppie.croppie({
     viewport: {
       width: img_w,
@@ -80,8 +81,6 @@ function cropInit(){
     mouseWheelZoom: false,
     enableOrientation: true
   });
-
-  $(".cr-slider-wrap").append('<button id="cr-rotate" onClick="cropRotate(-90);">↻ Rotate</button>');
 
   bindCropImg();
 }
@@ -98,9 +97,17 @@ function cropRotate(deg) {
   cr.croppie('rotate', parseInt(deg));
 }
 
+function toggleAspectRatio() {
+  [img_h, img_w] = [img_w, img_h];
+  cr.croppie('destroy');
+  cropInit();
+}
+
+// function transpose()
+
 //取消裁切
 function cropCancel() {
-  if($upload.is(':hidden')){
+  if ($upload.is(':hidden')) {
     $upload.fadeIn(300).siblings().hide();
     fileselect.value = "";
     isCrop = 0;
@@ -109,16 +116,35 @@ function cropCancel() {
 
 //圖片裁切
 function cropResult() {
-  if(!isCrop){
+  if (!isCrop) {
     isCrop = 1;
     cr.croppie('result', {
       type: 'canvas', // canvas(base64)|html
-      size: {width:img_w, height:img_h}, //'viewport'|'original'|{width:500, height:500}
+      size: { width: img_w, height: img_h }, //'viewport'|'original'|{width:500, height:500}
       format: 'jpeg', //'jpeg'|'png'|'webp'
       quality: 1 //0~1
     }).then(function (resp) {
       $crop.hide();
-      $result.find('img').attr('src', resp);
+
+      // 获取要显示结果的 canvas 元素
+      var canvas = document.getElementById('resultCanvas');
+      var ctx = canvas.getContext('2d');
+
+      // 创建一个新的图像对象
+      var img = new Image();
+      img.onload = function () {
+        // 将裁剪结果绘制到 canvas 上
+        canvas.width = img_w;
+        canvas.height = img_h;
+        ctx.drawImage(img, 0, 0);
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        floydSteinbergDithering(imageData);
+        ctx.putImageData(imageData, 0, 0);
+      };
+
+      // 设置图像的源为裁剪结果
+      img.src = resp;
+
       $result.fadeIn(300);
     });
   }

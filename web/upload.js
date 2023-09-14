@@ -1,50 +1,24 @@
-function loadImageFromFile(file) {
-    const reader = new FileReader();
-    reader.onload = function (event) {
-        const img = new Image();
-        img.onload = function () {
-            const canvas = document.getElementById('canvas');
-            const ctx = canvas.getContext('2d');
-
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.drawImage(img, 0, 0);
-
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            floydSteinbergDithering(imageData);
-            ctx.putImageData(imageData, 0, 0);
-        };
-        img.src = event.target.result;
-    };
-    reader.readAsDataURL(file);
-}
-
-// 监听文件选择按钮的变化
-const fileInput = document.getElementById('fileInput');
-fileInput.addEventListener('change', function (event) {
-    const file = event.target.files[0];
-    if (file && file.type.startsWith('image/')) {
-        loadImageFromFile(file);
-    } else {
-        alert('请选择图像文件！');
-    }
-});
-
-
-const uploadButton = document.getElementById('uploadButton');
-uploadButton.addEventListener('click', function () {
-    const canvas = document.getElementById('canvas');
+function upload() {
+    const canvas = document.getElementById('resultCanvas');
     const ctx = canvas.getContext('2d');
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imageData.data;
     const buffer = dataToBuffer(data);
 
+    const loader = document.getElementById('loader');
+    const percentage = document.getElementById('percentage');
+    const uploadButton = document.getElementById('uploadButton');
 
     const socket = new WebSocket('ws://' + location.host + '/echo');
-    let number = 0;
 
     socket.onopen = function () {
         console.log('WebSocket open');
+        loader.style.opacity = 1;
+        percentage.style.opacity = 1;
+        uploadButton.disabled = true;
+        uploadButton.style.backgroundColor = "#aaaaaa";
+
+
     };
     socket.onclose = function () {
         console.log('WebSocket close');
@@ -56,9 +30,16 @@ uploadButton.addEventListener('click', function () {
             const slicedBuffer = buffer.slice(number * canvas.width / 2, (number + 1) * canvas.width / 2);
             socket.send(slicedBuffer);
             number++;
+
+            percentage.innerHTML = (number / canvas.height * 100).toFixed(0) + '%';
         }
     };
-});
+    let number = 0;
+
+    ////
+
+
+}
 
 
 

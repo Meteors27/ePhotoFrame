@@ -190,6 +190,26 @@ class INA219:
         return value * self._current_lsb
 
 
+def batteryCheck():
+    # Create an ADS1115 ADC (16-bit) instance.
+    ina219 = INA219(addr=0x43)
+    bus_voltage = ina219.getBusVoltage_V()  # voltage on V- (load side)
+    current = ina219.getCurrent_mA()  # current in mA
+    P = (bus_voltage - 3) / 1.2 * 100
+    if P < 0:
+        P = 0
+    elif P > 100:
+        P = 100
+
+    # INA219 measure bus voltage on the load side. So PSU voltage = bus_voltage + shunt_voltage
+    print("Voltage:  {:6.3f} V".format(bus_voltage))
+    print("Current:  {:6.3f} A".format(current / 1000))
+    print("Percent:  {:6.1f} %".format(P))
+    print("")
+
+    return bus_voltage, current / 1000, P
+
+
 if __name__ == "__main__":
     # Create an ADS1115 ADC (16-bit) instance.
     ina219 = INA219(addr=0x43)

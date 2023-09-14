@@ -42,6 +42,10 @@ button:focus {
   position: relative;
 }
 
+#img-crop.transposed {
+  flex-direction: column-reverse;
+}
+
 #img-crop h3 {
   color: #2f3848;
   font-size: 1.2em;
@@ -55,23 +59,23 @@ button:focus {
 }
 
 #img-crop .block .stage {
-  width: 320px;
-  height: 320px;
+  /* width: 800px;
+  height: 480px; */
   position: relative;
 }
 
 #img-crop #upload label#filedrag {
   display: block;
-  width: 100%;
-  height: 100%;
-  background: url("https://img.icons8.com/ios/96/c8cccf/upload-2.png") 50% 50% no-repeat;
+  width: 800px;
+  height: 480px;
+  background: url("/upload.png") 50% 50% no-repeat;
   background-size: 25% auto;
   transition: background 0.3s ease;
   cursor: pointer;
 }
 
 #img-crop #upload label#filedrag.hover {
-  background-image: url("https://img.icons8.com/ios/96/c8cccf/upload-2-filled.png");
+  background-image: url("/upload.png");
 }
 
 #img-crop #upload input[type=file] {
@@ -83,13 +87,24 @@ button:focus {
   /******** Range Input ********/
 }
 
+.btn {
+  color: #fff;
+  width: 7em;
+  height: 2.5em;
+  border-radius: 3px;
+  background-color: #425389;
+  transition: background 0.3s ease-out;
+}
+
+
+
 #img-crop #crop .btn {
   color: #fff;
   width: 7em;
   height: 2.5em;
   border-radius: 3px;
   background-color: #425389;
-  position: absolute;
+  /* position: absolute; */
   top: 50%;
   transition: background 0.3s ease-out;
   transform: translateY(-50%);
@@ -151,7 +166,7 @@ button:focus {
 }
 
 #img-crop #crop .cr-slider-wrap .cr-slider {
-  width: 75%;
+  width: 100%;
   background-color: transparent;
 }
 
@@ -259,10 +274,15 @@ button:focus {
   display: none;
 }
 
+#img-crop #result .stage {
+  width: 800px;
+  height: 480px;
+}
+
 #img-crop #result #close {
   width: 50px;
   height: 50px;
-  background: url("//img.icons8.com/material/48/c8cccf/multiply.png") 50% 50% no-repeat;
+  background: url("/multiply.png") 50% 50% no-repeat;
   background-size: 80%;
   position: fixed;
   top: 0;
@@ -272,11 +292,46 @@ button:focus {
 }
 
 #img-crop #result #close:hover {
-  background-image: url("//img.icons8.com/material/48/8193a2/multiply.png");
+  background-image: url("/multiply.png");
 }
 
 #img-crop #result img {
   width: 100%;
   height: 100%;
   display: block;
+}
+
+.loader {
+  display: block;
+  --height-of-loader: 4px;
+  --loader-color: #425389;
+  height: var(--height-of-loader);
+  border-radius: 30px;
+  background-color: rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.loader::before {
+  content: "";
+  position: absolute;
+  background: var(--loader-color);
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  border-radius: 30px;
+  animation: moving 1s ease-in-out infinite;
+  ;
+}
+
+@keyframes moving {
+  50% {
+    width: 100%;
+  }
+
+  100% {
+    width: 0;
+    right: 0;
+    left: unset;
+  }
 }
